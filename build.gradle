@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+description = 'Demo project for Spring Boot'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+// Ya no necesitamos el repositorio de Spring, solo el principal
+repositories {
+    mavenCentral()
+}
+
+// Ya no necesitamos el BOM de Spring Cloud para esta dependencia
+// dependencyManagement { ... }
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // 👇 CAMBIO CLAVE AQUÍ 👇
+    // Reemplazamos la dependencia de Spring Cloud por la librería directa de Google.
+    // Esta se encuentra en mavenCentral, que SÍ te funciona.
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
